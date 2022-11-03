@@ -9,10 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountBox
-import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.Create
-import androidx.compose.material.icons.outlined.Star
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,7 +21,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,7 +47,7 @@ fun MyApp(content: @Composable () -> Unit){
         ) {
             Column() {
                 TopHeader()
-                BillCalc()
+                MainContent()
             }
         }
     }
@@ -79,14 +75,15 @@ fun TopHeader(totalPerPerson: Double = 0.0){
             ), contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            val total = ".2f".format(totalPerPerson)
             Text("Total Per Person", style = TextStyle(fontWeight = FontWeight.SemiBold), fontSize = 25.sp, color = Color.White)
-            Text("$${totalPerPerson}", style = TextStyle(fontWeight = FontWeight.ExtraBold, fontSize = 45.sp, color = Color.White))
+            Text("$${total}", style = TextStyle(fontWeight = FontWeight.ExtraBold, fontSize = 45.sp, color = Color.White))
         }
     }
 }
 
 @Composable
-fun BillCalc() {
+fun MainContent() {
     androidx.compose.material.Surface(modifier = Modifier
         .fillMaxWidth()
         .height(400.dp)
@@ -132,6 +129,6 @@ fun OutLineTextField(){
 fun DefaultPreview() {
     MyApp {
         TopHeader()
-        BillCalc()
+        MainContent()
     }
 }
