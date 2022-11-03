@@ -46,7 +46,8 @@ fun MyApp(content: @Composable () -> Unit){
     GoDutchTheme {
         // A surface container using the 'background' color from the theme
         Surface(
-            color = MaterialTheme.colors.background
+            color = MaterialTheme.colors.background,
+            modifier = Modifier.fillMaxWidth().fillMaxHeight()
         ) {
             Column() {
                 TopHeader()
@@ -88,8 +89,10 @@ fun TopHeader(){
 fun BillCalc() {
     androidx.compose.material.Surface(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight()
-        .padding(20.dp), border = BorderStroke(0.05.dp, Color.LightGray)
+        .height(400.dp)
+        .padding(20.dp), border = BorderStroke(0.05.dp, Color.LightGray),
+        elevation = 1.dp,
+        shape = RoundedCornerShape(5)
     ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 OutLineTextField()
