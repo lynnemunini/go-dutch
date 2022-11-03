@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AttachMoney
 import androidx.compose.material.icons.outlined.Create
 
 import androidx.compose.runtime.*
@@ -55,7 +56,7 @@ fun MyApp(content: @Composable () -> Unit){
 }
 @Preview
 @Composable
-fun TopHeader(totalPerPerson: Double = 0.0){
+fun TopHeader(totalPerPerson: Double = 133.33){
     // convert the box size to pixels
     val boxSize = with(LocalDensity.current) { 300.dp.toPx()}
     Box(
@@ -103,7 +104,7 @@ fun OutLineTextField(){
     var text by remember { mutableStateOf(TextFieldValue(""))}
         OutlinedTextField(
             value = text,
-            leadingIcon = { Icon(Icons.Outlined.Create, contentDescription = "Account Icon") },
+            leadingIcon = { Icon(Icons.Outlined.AttachMoney, contentDescription = "Account Icon") },
             modifier = Modifier.fillMaxWidth(),
             label = {
                 Text(text = "Amount")
