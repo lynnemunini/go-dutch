@@ -59,7 +59,7 @@ fun MyApp(content: @Composable () -> Unit){
 }
 @Preview
 @Composable
-fun TopHeader(){
+fun TopHeader(totalPerPerson: Double = 0.0){
     // convert the box size to pixels
     val boxSize = with(LocalDensity.current) { 300.dp.toPx()}
     Box(
@@ -78,9 +78,9 @@ fun TopHeader(){
                 shape = RoundedCornerShape(10)
             ), contentAlignment = Alignment.Center
     ) {
-        Column() {
-            Text("Total Per Person", textAlign = TextAlign.Center, style = TextStyle(fontWeight = FontWeight.SemiBold), fontSize = 25.sp, color = Color.White)
-            Text("$133.00", textAlign = TextAlign.Center, style = TextStyle(fontWeight = FontWeight.ExtraBold, fontSize = 45.sp, color = Color.White))
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            Text("Total Per Person", style = TextStyle(fontWeight = FontWeight.SemiBold), fontSize = 25.sp, color = Color.White)
+            Text("$${totalPerPerson}", style = TextStyle(fontWeight = FontWeight.ExtraBold, fontSize = 45.sp, color = Color.White))
         }
     }
 }
@@ -91,8 +91,8 @@ fun BillCalc() {
         .fillMaxWidth()
         .height(400.dp)
         .padding(20.dp), border = BorderStroke(0.05.dp, Color.LightGray),
-        elevation = 1.dp,
-        shape = RoundedCornerShape(5)
+        elevation = 0.5.dp,
+        shape = RoundedCornerShape(2)
     ) {
             Column(modifier = Modifier.padding(10.dp)) {
                 OutLineTextField()
