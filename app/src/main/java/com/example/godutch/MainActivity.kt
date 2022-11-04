@@ -7,6 +7,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AttachMoney
@@ -14,17 +15,21 @@ import androidx.compose.material.icons.outlined.Create
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.godutch.components.InputField
 import com.example.godutch.ui.theme.GoDutchTheme
 
 class MainActivity : ComponentActivity() {
@@ -44,7 +49,9 @@ fun MyApp(content: @Composable () -> Unit){
         // A surface container using the 'background' color from the theme
         Surface(
             color = MaterialTheme.colors.background,
-            modifier = Modifier.fillMaxWidth().fillMaxHeight()
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
         ) {
             Column() {
                 TopHeader()
@@ -67,7 +74,8 @@ fun TopHeader(totalPerPerson: Double = 133.33){
             .height(200.dp)
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFFF94892), Color(0xFFFF7F3F), Color(0xFFFBDF07), Color(0xFF89CFFD)
+                    colors = listOf(
+                        Color(0xFFF94892), Color(0xFFFF7F3F), Color(0xFFFBDF07), Color(0xFF89CFFD)
                     ),
                     start = Offset(0f, 0f), // top left corner
                     end = Offset(boxSize, boxSize) // bottom right corner
@@ -83,8 +91,16 @@ fun TopHeader(totalPerPerson: Double = 133.33){
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainContent() {
+    val totalBillState = remember {
+        mutableStateOf("")
+    }
+    val validState = remember(totalBillState.value){
+        totalBillState.value.trim().isNotEmpty()
+    }
+    val keyboardController = LocalSoftwareKeyboardController.current
     androidx.compose.material.Surface(modifier = Modifier
         .fillMaxWidth()
         .height(400.dp)
@@ -93,37 +109,16 @@ fun MainContent() {
         shape = RoundedCornerShape(2)
     ) {
             Column(modifier = Modifier.padding(10.dp)) {
-                OutLineTextField()
+                InputField(valueState = totalBillState, labelId = "Enter Bill", enabled = true, isSingleLine = true, onAction = KeyboardActions{
+                    if (!validState) return@KeyboardActions
+                    //Todo - onValueChanged
+                    keyboardController?.hide()
+
+                    })
             }
     }
 
 }
-
-@Composable
-fun OutLineTextField(){
-    var text by remember { mutableStateOf(TextFieldValue(""))}
-        OutlinedTextField(
-            value = text,
-            leadingIcon = { Icon(Icons.Outlined.AttachMoney, contentDescription = "Account Icon") },
-            modifier = Modifier.fillMaxWidth(),
-            label = {
-                Text(text = "Amount")
-            } ,
-            onValueChange = {
-                text = it
-            },
-            placeholder = { Text(text = "Enter Bill")},
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color(0xFFFBDF07),
-                unfocusedBorderColor = Color(0xFFFF7F3F),
-                leadingIconColor = Color(0xFFFF7F3F),
-                placeholderColor = Color.LightGray,
-                cursorColor = Color(0xFFFBDF07),
-                focusedLabelColor = Color(0xFFFF7F3F),
-            )
-        )
-    }
-
 
 @Preview(showBackground = true)
 @Composable

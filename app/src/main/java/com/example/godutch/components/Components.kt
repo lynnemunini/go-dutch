@@ -1,19 +1,22 @@
 package com.example.godutch.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material.icons.outlined.AttachMoney
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun InputField(
@@ -29,8 +32,13 @@ fun InputField(
 ) {
     OutlinedTextField(
         value = valueState.value,
-        leadingIcon = { Icon(imageVector = Icons.Outlined.Create, contentDescription = "Money Icon") },
-        modifier = Modifier.fillMaxWidth(),
+        leadingIcon = { Icon(imageVector = Icons.Outlined.AttachMoney, contentDescription = "Money Icon") },
+        singleLine = isSingleLine,
+        textStyle = TextStyle(fontSize = 18.sp, color = MaterialTheme.colors.onBackground),
+        enabled = enabled,
+        keyboardOptions = KeyboardOptions(keyboardType = keyBoardType, imeAction = imeAction),
+        keyboardActions = onAction,
+        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp, start = 10.dp, end = 10.dp),
         label = {
             Text(text = labelId)
         } ,
