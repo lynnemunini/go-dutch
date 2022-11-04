@@ -38,7 +38,7 @@ fun InputField(
         enabled = enabled,
         keyboardOptions = KeyboardOptions(keyboardType = keyBoardType, imeAction = imeAction),
         keyboardActions = onAction,
-        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp, start = 10.dp, end = 10.dp),
+        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
         label = {
             Text(text = labelId)
         } ,
