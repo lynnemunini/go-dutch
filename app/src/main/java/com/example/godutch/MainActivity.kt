@@ -1,6 +1,7 @@
 package com.example.godutch
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -94,6 +95,14 @@ fun TopHeader(totalPerPerson: Double = 133.33){
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainContent() {
+    BillForm(){ billAmt ->
+        Log.d("AMT", "MainContent: ${billAmt.toInt() * 100}")
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}){
     val totalBillState = remember {
         mutableStateOf("")
     }
@@ -108,14 +117,14 @@ fun MainContent() {
         elevation = 0.5.dp,
         shape = RoundedCornerShape(2)
     ) {
-            Column(modifier = Modifier.padding(10.dp)) {
-                InputField(valueState = totalBillState, labelId = "Enter Bill", enabled = true, isSingleLine = true, onAction = KeyboardActions{
-                    if (!validState) return@KeyboardActions
-                    //Todo - onValueChanged
-                    keyboardController?.hide()
-
-                    })
-            }
+        Column(modifier = Modifier.padding(10.dp)) {
+            InputField(valueState = totalBillState, labelId = "Enter Bill", enabled = true, isSingleLine = true, onAction = KeyboardActions{
+                if (!validState) return@KeyboardActions
+                //Todo - onValueChanged
+                onValChange(totalBillState.value.trim())
+                keyboardController?.hide()
+            })
+        }
     }
 
 }

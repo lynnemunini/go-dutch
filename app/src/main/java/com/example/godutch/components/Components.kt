@@ -26,7 +26,7 @@ fun InputField(
     labelId:String,
     enabled: Boolean,
     isSingleLine: Boolean,
-    keyBoardType: KeyboardType = KeyboardType.Ascii,
+    keyBoardType: KeyboardType = KeyboardType.Number,
     imeAction: ImeAction = ImeAction.Next,
     onAction: KeyboardActions = KeyboardActions.Default
 ) {
@@ -55,5 +55,4 @@ fun InputField(
             focusedLabelColor = Color(0xFFFF7F3F),
         )
     )
-
 }
