@@ -133,9 +133,10 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}){
                     horizontalArrangement = Arrangement.Start) {
                     Text("Split", modifier = Modifier.align(alignment = Alignment.CenterVertically))
                     Spacer(modifier = Modifier.width(120.dp))
-                    Row(modifier = Modifier.padding(horizontal = 3.dp), horizontalArrangement = Arrangement.End) {
+                    Row(horizontalArrangement = Arrangement.End) {
                         RoundIconButton(imageVector = Icons.Default.Remove,
                             onClick = { Log.d("Icon", "BillForm: Removed") })
+                        Spacer(modifier = Modifier.width(30.dp))
                         RoundIconButton(imageVector = Icons.Default.Add, onClick = {
                             Log.d("Icon", "BillForm: Add")
                         })
