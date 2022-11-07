@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApp{
+            MyApp {
 
             }
         }
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp(content: @Composable () -> Unit){
+fun MyApp(content: @Composable () -> Unit) {
     GoDutchTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -64,13 +64,13 @@ fun MyApp(content: @Composable () -> Unit){
             }
         }
     }
-
 }
+
 @Preview
 @Composable
-fun TopHeader(totalPerPerson: Double = 133.33){
+fun TopHeader(totalPerPerson: Double = 133.33) {
     // convert the box size to pixels
-    val boxSize = with(LocalDensity.current) { 300.dp.toPx()}
+    val boxSize = with(LocalDensity.current) { 300.dp.toPx() }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -88,10 +88,25 @@ fun TopHeader(totalPerPerson: Double = 133.33){
                 shape = RoundedCornerShape(10)
             ), contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             val total = "133.57"
-            Text("Total Per Person", style = TextStyle(fontWeight = FontWeight.SemiBold), fontSize = 25.sp, color = Color.White)
-            Text("$${total}", style = TextStyle(fontWeight = FontWeight.ExtraBold, fontSize = 45.sp, color = Color.White))
+            Text(
+                "Total Per Person",
+                style = TextStyle(fontWeight = FontWeight.SemiBold),
+                fontSize = 25.sp,
+                color = Color.White
+            )
+            Text(
+                "$${total}",
+                style = TextStyle(
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 45.sp,
+                    color = Color.White
+                )
+            )
         }
     }
 }
@@ -99,55 +114,83 @@ fun TopHeader(totalPerPerson: Double = 133.33){
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainContent() {
-    BillForm(){ billAmt ->
+    BillForm() { billAmt ->
         Log.d("AMT", "MainContent: ${billAmt.toInt() * 100}")
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}){
+fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) {
     val totalBillState = remember {
         mutableStateOf("")
     }
-    val validState = remember(totalBillState.value){
+    val validState = remember(totalBillState.value) {
         totalBillState.value.trim().isNotEmpty()
     }
+    val splitCount = remember {
+        mutableStateOf(1)
+    }
+    if (splitCount.value <= 1) {
+        splitCount.value = 1
+    }
     val keyboardController = LocalSoftwareKeyboardController.current
-    androidx.compose.material.Surface(modifier = Modifier
-        .fillMaxWidth()
-        .height(400.dp)
-        .padding(20.dp), border = BorderStroke(0.05.dp, Color.LightGray),
+    androidx.compose.material.Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(400.dp)
+            .padding(20.dp), border = BorderStroke(0.05.dp, Color.LightGray),
         elevation = 0.5.dp,
         shape = RoundedCornerShape(2)
     ) {
-        Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start) {
-            InputField(valueState = totalBillState, labelId = "Enter Bill", enabled = true, isSingleLine = true, onAction = KeyboardActions{
-                if (!validState) return@KeyboardActions
-                //Todo - onValueChanged
-                onValChange(totalBillState.value.trim())
-                keyboardController?.hide()
-            })
+        Column(
+            modifier = Modifier.padding(10.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
+            InputField(
+                valueState = totalBillState,
+                labelId = "Enter Bill",
+                enabled = true,
+                isSingleLine = true,
+                onAction = KeyboardActions {
+                    if (!validState) return@KeyboardActions
+                    onValChange(totalBillState.value.trim())
+                    keyboardController?.hide()
+                })
             if (validState) {
-                Row(modifier = Modifier.padding(top = 20.dp, bottom = 3.dp, start = 3.dp, end = 3.dp),
-                    horizontalArrangement = Arrangement.Start) {
+                Row(
+                    modifier = Modifier.padding(
+                        top = 20.dp,
+                        bottom = 3.dp,
+                        start = 3.dp,
+                        end = 3.dp
+                    ),
+                    horizontalArrangement = Arrangement.Start
+                ) {
                     Text("Split", modifier = Modifier.align(alignment = Alignment.CenterVertically))
                     Spacer(modifier = Modifier.width(120.dp))
-                    Row(modifier = Modifier.padding(horizontal = 3.dp), horizontalArrangement = Arrangement.End) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 3.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
                         RoundIconButton(imageVector = Icons.Default.Remove,
-                            onClick = { Log.d("Icon", "BillForm: Removed") })
-                        Text(text = "2", modifier = Modifier.align(Alignment.CenterVertically).padding(start = 15.dp, end = 15.dp))
+                            onClick = {
+                                splitCount.value = splitCount.value - 1
+                            })
+                        Text(
+                            text = splitCount.value.toString(),
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .padding(start = 15.dp, end = 15.dp)
+                        )
                         //Spacer(modifier = Modifier.width(30.dp))
                         RoundIconButton(imageVector = Icons.Default.Add, onClick = {
-                            Log.d("Icon", "BillForm: Add")
+                            splitCount.value = splitCount.value + 1
                         })
-
-                        
                     }
-
                 }
-            }
-            else {
+            } else {
                 Box() {
 
                 }
