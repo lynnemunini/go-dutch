@@ -1,5 +1,6 @@
 package com.example.godutch
 
+import android.graphics.Paint.Align
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -11,6 +12,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.outlined.AttachMoney
 import androidx.compose.material.icons.outlined.Create
 
@@ -32,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.godutch.components.InputField
 import com.example.godutch.ui.theme.GoDutchTheme
+import com.example.godutch.widgets.RoundIconButton
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,13 +121,35 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}){
         elevation = 0.5.dp,
         shape = RoundedCornerShape(2)
     ) {
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.Start) {
             InputField(valueState = totalBillState, labelId = "Enter Bill", enabled = true, isSingleLine = true, onAction = KeyboardActions{
                 if (!validState) return@KeyboardActions
                 //Todo - onValueChanged
                 onValChange(totalBillState.value.trim())
                 keyboardController?.hide()
             })
+            if (validState) {
+                Row(modifier = Modifier.padding(top = 20.dp, bottom = 3.dp, start = 3.dp, end = 3.dp),
+                    horizontalArrangement = Arrangement.Start) {
+                    Text("Split", modifier = Modifier.align(alignment = Alignment.CenterVertically))
+                    Spacer(modifier = Modifier.width(120.dp))
+                    Row(modifier = Modifier.padding(horizontal = 3.dp), horizontalArrangement = Arrangement.End) {
+                        RoundIconButton(imageVector = Icons.Default.Remove,
+                            onClick = { Log.d("Icon", "BillForm: Removed") })
+                        RoundIconButton(imageVector = Icons.Default.Add, onClick = {
+                            Log.d("Icon", "BillForm: Add")
+                        })
+
+                        
+                    }
+
+                }
+            }
+            else {
+                Box() {
+
+                }
+            }
         }
     }
 
