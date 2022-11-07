@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
@@ -92,7 +93,7 @@ fun TopHeader(totalPerPerson: Double = 133.33) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            val total = "133.57"
+            val total = totalPerPerson
             Text(
                 "Total Per Person",
                 style = TextStyle(fontWeight = FontWeight.SemiBold),
@@ -137,6 +138,7 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
     val sliderPositionState = remember {
         mutableStateOf(0f)
     }
+    val tipPercentage = sliderPositionState.value * 100
     val keyboardController = LocalSoftwareKeyboardController.current
     androidx.compose.material.Surface(
         modifier = Modifier
@@ -203,18 +205,25 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
             ) {
                 Text(text = "Tip", modifier = Modifier.align(alignment = Alignment.CenterVertically))
                 Spacer(modifier = Modifier.width(200.dp))
-                Text(text = "$33.00", modifier = Modifier.align(alignment = Alignment.CenterVertically))
+                Text(text = "$${String.format("%.2f", tipPercentage.toInt().toFloat())}", modifier = Modifier.align(alignment = Alignment.CenterVertically))
 
             }
             Column(verticalArrangement = Arrangement.Center) {
-                Text(text = "33%", modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
+                Text(text = "${tipPercentage.toInt()}%", modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
                 Spacer(modifier = Modifier.height(14.
                 dp))
                 //Slider
                 Slider(value = sliderPositionState.value,
                     onValueChange = {newVal ->
+                        sliderPositionState.value = newVal
                         Log.d("Slider","BillForm: $newVal")
-                    })
+                    },
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                    steps = 5,
+                    onValueChangeFinished = {
+                      //Log.d(TAG, "Finished...")
+                    },
+                    colors = SliderDefaults.colors(thumbColor = Color(0xFFFF7F3F), activeTrackColor = Color(0xFFFBDF07)))
 
             }
 //            } else {
