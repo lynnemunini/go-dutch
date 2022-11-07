@@ -134,6 +134,9 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
     if (splitCount.value <= 1) {
         splitCount.value = 1
     }
+    val sliderPositionState = remember {
+        mutableStateOf(0f)
+    }
     val keyboardController = LocalSoftwareKeyboardController.current
     androidx.compose.material.Surface(
         modifier = Modifier
@@ -158,7 +161,7 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
                     onValChange(totalBillState.value.trim())
                     keyboardController?.hide()
                 })
-            if (validState) {
+            //if (validState) {
                 Row(
                     modifier = Modifier.padding(
                         top = 20.dp,
@@ -190,11 +193,35 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
                         })
                     }
                 }
-            } else {
-                Box() {
+            // Tip Row
+            Row(
+                modifier = Modifier.padding(
+                    horizontal = 3.dp,
+                    vertical = 30.dp
+                ),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(text = "Tip", modifier = Modifier.align(alignment = Alignment.CenterVertically))
+                Spacer(modifier = Modifier.width(200.dp))
+                Text(text = "$33.00", modifier = Modifier.align(alignment = Alignment.CenterVertically))
 
-                }
             }
+            Column(verticalArrangement = Arrangement.Center) {
+                Text(text = "33%", modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
+                Spacer(modifier = Modifier.height(14.
+                dp))
+                //Slider
+                Slider(value = sliderPositionState.value,
+                    onValueChange = {newVal ->
+                        Log.d("Slider","BillForm: $newVal")
+                    })
+
+            }
+//            } else {
+//                Box() {
+//
+//                }
+//            }
         }
     }
 
