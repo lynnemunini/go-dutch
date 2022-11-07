@@ -69,7 +69,7 @@ fun MyApp(content: @Composable () -> Unit) {
 
 @Preview
 @Composable
-fun TopHeader(totalPerPerson: Double = 133.33) {
+fun TopHeader(totalPerPerson: Double = 133.39876) {
     // convert the box size to pixels
     val boxSize = with(LocalDensity.current) { 300.dp.toPx() }
     Box(
@@ -93,7 +93,7 @@ fun TopHeader(totalPerPerson: Double = 133.33) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            val total = totalPerPerson
+            val total = String.format("%.2f", totalPerPerson)
             Text(
                 "Total Per Person",
                 style = TextStyle(fontWeight = FontWeight.SemiBold),
@@ -101,7 +101,7 @@ fun TopHeader(totalPerPerson: Double = 133.33) {
                 color = Color.White
             )
             Text(
-                "$${total}",
+                total,
                 style = TextStyle(
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 45.sp,
@@ -112,7 +112,6 @@ fun TopHeader(totalPerPerson: Double = 133.33) {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainContent() {
     BillForm() { billAmt ->
