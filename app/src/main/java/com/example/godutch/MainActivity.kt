@@ -1,6 +1,5 @@
 package com.example.godutch
 
-import android.graphics.Paint.Align
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -11,12 +10,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material.icons.outlined.AttachMoney
-import androidx.compose.material.icons.outlined.Create
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,10 +23,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,7 +54,7 @@ fun MyApp(content: @Composable () -> Unit) {
                 .fillMaxHeight()
         ) {
             Column() {
-                TopHeader()
+                //TopHeader()
                 MainContent()
             }
         }
@@ -69,7 +63,7 @@ fun MyApp(content: @Composable () -> Unit) {
 
 @Preview
 @Composable
-fun TopHeader(totalPerPerson: Double = 133.39876) {
+fun TopHeader(totalPerPerson: Double = 0.00) {
     // convert the box size to pixels
     val boxSize = with(LocalDensity.current) { 300.dp.toPx() }
     Box(
@@ -123,7 +117,7 @@ fun MainContent() {
 @Composable
 fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) {
     val totalBillState = remember {
-        mutableStateOf("")
+        mutableStateOf("0.0")
     }
     val validState = remember(totalBillState.value) {
         totalBillState.value.trim().isNotEmpty()
@@ -137,9 +131,17 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
     val sliderPositionState = remember {
         mutableStateOf(0f)
     }
-    val tipPercentage = sliderPositionState.value * 100
+    val tipAmountState = remember {
+        mutableStateOf(0f)
+    }
+    val amountPerPerson = remember {
+        mutableStateOf(0.0)
+    }
+    val tipPercentage: Int = (sliderPositionState.value * 100).toInt()
+
+    TopHeader(amountPerPerson.value)
     val keyboardController = LocalSoftwareKeyboardController.current
-    androidx.compose.material.Surface(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .height(400.dp)
@@ -162,7 +164,7 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
                     onValChange(totalBillState.value.trim())
                     keyboardController?.hide()
                 })
-            //if (validState) {
+
                 Row(
                     modifier = Modifier.padding(
                         top = 20.dp,
@@ -204,17 +206,23 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
             ) {
                 Text(text = "Tip", modifier = Modifier.align(alignment = Alignment.CenterVertically))
                 Spacer(modifier = Modifier.width(200.dp))
-                Text(text = "$${String.format("%.2f", tipPercentage.toInt().toFloat())}", modifier = Modifier.align(alignment = Alignment.CenterVertically))
+                Text(text = "$${String.format("%.2f", tipAmountState.value)}", modifier = Modifier.align(alignment = Alignment.CenterVertically))
 
             }
             Column(verticalArrangement = Arrangement.Center) {
-                Text(text = "${tipPercentage.toInt()}%", modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
+                Text(text = "${tipPercentage}%", modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
                 Spacer(modifier = Modifier.height(14.
                 dp))
                 //Slider
                 Slider(value = sliderPositionState.value,
                     onValueChange = {newVal ->
                         sliderPositionState.value = newVal
+                        tipAmountState.value = calculateTotalTip(totalBillState.value.toFloat(), tipPercentage)
+                        amountPerPerson.value = calculateTotalPerPerson(
+                            billAmt = totalBillState.value.toDouble(),
+                            tipPercentage = tipPercentage,
+                            splitCount = splitCount.value
+                        )
                         Log.d("Slider","BillForm: $newVal")
                     },
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp),
@@ -225,14 +233,18 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
                     colors = SliderDefaults.colors(thumbColor = Color(0xFFFF7F3F), activeTrackColor = Color(0xFFFBDF07)))
 
             }
-//            } else {
-//                Box() {
-//
-//                }
-//            }
         }
     }
 
+}
+
+fun calculateTotalPerPerson(billAmt: Double, tipPercentage: Int, splitCount: Int): Double {
+    val total = billAmt + (billAmt * tipPercentage / 100)
+    return total.toDouble() / splitCount
+}
+
+fun calculateTotalTip(billAmt: Float, tipPercentage: Int): Float {
+    return billAmt * tipPercentage / 100
 }
 
 @Preview(showBackground = true)
