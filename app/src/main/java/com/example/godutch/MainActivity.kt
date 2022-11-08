@@ -85,7 +85,7 @@ fun TopHeader(totalPerPerson: Double = 0.00) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            val total = String.format("%.2f", totalPerPerson)
+            val total = String.format("$%.2f", totalPerPerson)
             Text(
                 "Total Per Person",
                 style = TextStyle(fontWeight = FontWeight.SemiBold),
