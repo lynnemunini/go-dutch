@@ -1,4 +1,4 @@
-# Go Dutch App - A simple app to split bills between friends
+# Go Dutch App
 
 The application is built using Jetpack Compose and Kotlin and is a simple app to split bills between friends.
 
