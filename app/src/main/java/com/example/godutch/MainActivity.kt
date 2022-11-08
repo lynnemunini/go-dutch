@@ -59,7 +59,6 @@ fun MyApp() {
 }
 
 /* TopHeader() function contains the banner that shows the total amount to be paid per person. */
-@Preview
 @Composable
 fun TopHeader(totalPerPerson: Double = 0.00) {
     // convert the box size to pixels
@@ -182,7 +181,7 @@ fun BillForm(onValChange: (String) -> Unit = {}) {
                 ) {
                     RoundIconButton(imageVector = Icons.Default.Remove,
                         onClick = {
-                            if (splitCount.value != 1) {
+                            if (splitCount.value > 1) {
                                 splitCount.value = splitCount.value - 1
                             } else {
                                 splitCount.value = 1
@@ -244,8 +243,7 @@ fun BillForm(onValChange: (String) -> Unit = {}) {
                     value = sliderPositionState.value,
                     onValueChange = { newVal ->
                         sliderPositionState.value = newVal
-                        tipAmountState.value =
-                            calculateTotalTip(totalBillState.value.toDouble(), tipPercentage)
+                        tipAmountState.value = calculateTotalTip(totalBillState.value.toDouble(), tipPercentage)
                         amountPerPerson.value = calculateTotalPerPerson(
                             billAmt = totalBillState.value.toDouble(),
                             tipPercentage = tipPercentage,
