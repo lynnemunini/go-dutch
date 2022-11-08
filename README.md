@@ -5,6 +5,6 @@ The application is built using Jetpack Compose and Kotlin and is a simple app to
 **UI Screenshots**
 
 
-<img src="images/screenshot1.jpg" alt="Screenshots" width="20%">
-<img src="images/screenshot2.jpg" alt="Screenshots" width="20%">
-<img src="images/screenshot3.jpg" alt="Screenshots" width="20%">
+<img src="images/screenshot1.jpg" alt="Screenshots" width="30%">
+<img src="images/screenshot2.jpg" alt="Screenshots" width="30%">
+<img src="images/screenshot3.jpg" alt="Screenshots" width="30%">
