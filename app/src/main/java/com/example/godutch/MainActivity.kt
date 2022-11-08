@@ -132,7 +132,7 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
         mutableStateOf(0f)
     }
     val tipAmountState = remember {
-        mutableStateOf(0f)
+        mutableStateOf(0.0)
     }
     val amountPerPerson = remember {
         mutableStateOf(0.0)
@@ -217,7 +217,7 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
                 Slider(value = sliderPositionState.value,
                     onValueChange = {newVal ->
                         sliderPositionState.value = newVal
-                        tipAmountState.value = calculateTotalTip(totalBillState.value.toFloat(), tipPercentage)
+                        tipAmountState.value = calculateTotalTip(totalBillState.value.toDouble(), tipPercentage)
                         amountPerPerson.value = calculateTotalPerPerson(
                             billAmt = totalBillState.value.toDouble(),
                             tipPercentage = tipPercentage,
@@ -243,7 +243,7 @@ fun calculateTotalPerPerson(billAmt: Double, tipPercentage: Int, splitCount: Int
     return total.toDouble() / splitCount
 }
 
-fun calculateTotalTip(billAmt: Float, tipPercentage: Int): Float {
+fun calculateTotalTip(billAmt: Double, tipPercentage: Int): Double {
     return billAmt * tipPercentage / 100
 }
 
