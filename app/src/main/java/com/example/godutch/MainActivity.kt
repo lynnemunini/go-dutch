@@ -182,7 +182,12 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
                     ) {
                         RoundIconButton(imageVector = Icons.Default.Remove,
                             onClick = {
-                                splitCount.value = splitCount.value - 1
+                                if (splitCount.value != 1) {
+                                    splitCount.value = splitCount.value - 1
+                                }
+                                else {
+                                    splitCount.value = 1
+                                }
                                 amountPerPerson.value = calculateTotalPerPerson(
                                     billAmt = totalBillState.value.toDouble(),
                                     tipPercentage = tipPercentage,
