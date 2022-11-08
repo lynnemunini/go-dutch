@@ -183,6 +183,11 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
                         RoundIconButton(imageVector = Icons.Default.Remove,
                             onClick = {
                                 splitCount.value = splitCount.value - 1
+                                amountPerPerson.value = calculateTotalPerPerson(
+                                    billAmt = totalBillState.value.toDouble(),
+                                    tipPercentage = tipPercentage,
+                                    splitCount = splitCount.value
+                                )
                             })
                         Text(
                             text = splitCount.value.toString(),
@@ -193,6 +198,11 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
                         //Spacer(modifier = Modifier.width(30.dp))
                         RoundIconButton(imageVector = Icons.Default.Add, onClick = {
                             splitCount.value = splitCount.value + 1
+                            amountPerPerson.value = calculateTotalPerPerson(
+                                billAmt = totalBillState.value.toDouble(),
+                                tipPercentage = tipPercentage,
+                                splitCount = splitCount.value
+                            )
                         })
                     }
                 }
@@ -240,7 +250,7 @@ fun BillForm(modifier: Modifier = Modifier, onValChange: (String) -> Unit = {}) 
 
 fun calculateTotalPerPerson(billAmt: Double, tipPercentage: Int, splitCount: Int): Double {
     val total = billAmt + (billAmt * tipPercentage / 100)
-    return total.toDouble() / splitCount
+    return total / splitCount
 }
 
 fun calculateTotalTip(billAmt: Double, tipPercentage: Int): Double {
